@@ -18,7 +18,7 @@
         <button onclick="mostrarEtapa1()">Próximo 💖</button>
     </div>
 
-        <!-- ETAPA 1 -->
+    <!-- ETAPA 1 -->
     <div class="card" id="etapa1" style="display:none;">
         <h2>Vou lhe contar sobre uma pessoa que conheço…</h2>
         <button onclick="mostrarEtapa2()">Continuar ➜</button>
@@ -30,7 +30,7 @@
         <button onclick="mostrarEtapa3()">Quero ver ➜</button>
     </div>
 
-    <!-- ETAPA 3 (Foto 1) -->
+    <!-- ETAPA 3 (Foto) -->
     <div class="card" id="etapa3" style="display:none;">
         <p>Aqui está ela… 😍</p>
         <img id="foto1" class="photo" src="assets/foto1.jpg" style="display:block;" />
@@ -45,7 +45,22 @@
         <span class="heart">❤️</span>
     </div>
 
-    <!-- ETAPAS... (restante igual ao seu código) -->
+    <!-- POPUP NORMAL -->
+    <div id="popup" class="popup" style="display:none;">
+        <div class="popup-content">
+            <span class="close" onclick="fecharPopup()">&times;</span>
+            <p id="popup-text"></p>
+        </div>
+    </div>
+
+    <!-- POPUP EXCLUSIVO DA PERGUNTA "TRANQUEIRA" -->
+    <div id="popupTranqueira" class="popup" style="display:none;">
+        <div id="popupTranqueira-content" class="popup-content">
+            <p>O Mateus é Tranqueira?</p>
+            <button id="btnSim2" onmouseover="desviarBotao()">Sim</button>
+            <button onclick="popupEspecial()">Não</button>
+        </div>
+    </div>
 
     <script src="js/script.js"></script>
 </body>
