@@ -3,11 +3,18 @@ body {
     background: linear-gradient(120deg, #ff9a9e, #fad0c4);
     min-height: 100vh;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
     text-align: center;
     padding: 20px;
+    overflow-x: hidden;
+}
+
+/* Mantém tudo no topo do PC (estável) */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
 /* CARD */
@@ -17,7 +24,9 @@ body {
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     max-width: 380px;
-    animation: fadeIn 1s ease;
+    width: 100%;
+    animation: fadeIn 0.7s ease;
+    margin-top: 40px; /* Mantém todas as etapas alinhadas */
 }
 
 @keyframes fadeIn {
@@ -35,6 +44,7 @@ button {
     color: white;
     cursor: pointer;
     font-size: 16px;
+    transition: background 0.2s;
 }
 
 button:hover {
@@ -71,7 +81,7 @@ button:hover {
     font-weight: bold;
 }
 
-/* POPUP – fundo escuro */
+/* POPUP */
 .popup {
     position: fixed;
     top: 0;
@@ -85,7 +95,6 @@ button:hover {
     z-index: 999;
 }
 
-/* POPUP – caixa */
 .popup-content {
     background: white;
     padding: 20px;
@@ -103,33 +112,287 @@ button:hover {
 /* ============================= */
 .foto-solta {
     position: absolute;
-    width: 150px; /* ligeiramente maior para destacar */
-    height: auto;
+    width: 140px;
     object-fit: cover;
-    border-radius: 12px;
+    border-radius: 14px;
     opacity: 0;
     transform-origin: center center;
     box-shadow: 0 8px 20px rgba(0,0,0,0.25);
     pointer-events: auto;
     z-index: 60;
     animation: aparecerFoto 0.6s forwards ease-out;
-    transition: transform 0.35s ease-out; /* APENAS transform */
+    transition: transform 0.35s ease-out;
 }
 
-/* AUMENTA MUITO AO PASSAR O MOUSE */
+/* Hover no PC */
 .foto-solta:hover {
-    transform: scale(1.8) !important;   /* diminuído em ~70% */
+    transform: scale(1.6) !important;
     z-index: 99999 !important;
 }
 
-/* ANIMAÇÃO ÚNICA */
+/* ANIMAÇÃO */
 @keyframes aparecerFoto {
     from { opacity: 0; transform: scale(0.6); }
     to   { opacity: 1; transform: scale(1); }
 }
 
-/* Animação do popup */
+/* Anim pop */
 @keyframes aparecer {
     from { transform: scale(0.8); opacity: 0; }
     to   { transform: scale(1); opacity: 1; }
+}
+
+/* ============================= */
+/*       CELULAR (≤600px)        */
+/* ============================= */
+@media (max-width: 600px) {
+
+    body {
+        justify-content: flex-start;
+        padding: 10px;
+    }
+
+    .card {
+        max-width: 320px;
+        padding: 20px;
+        margin-top: 25px;
+    }
+
+    .popup-content {
+        width: 90%;
+        max-width: 300px;
+        font-size: 16px;
+        padding: 15px;
+    }
+
+    .foto-solta {
+        width: 90px;
+        border-radius: 10px;
+        transition: transform 0.25s ease-out;
+    }
+
+    /* Zoom no toque */
+    .foto-solta:active {
+        transform: scale(1.35) !important;
+        z-index: 999999;
+    }
+}
+
+/* ============================= */
+/*       PC / NOTEBOOK           */
+/* ============================= */
+@media (min-width: 700px) {
+    
+    body {
+        justify-content: flex-start;  /* Nada desce */
+        align-items: center;
+        padding-top: 30px;
+    }
+
+    .card {
+        margin-top: 50px;   /* Todas as etapas ficam alinhadas */
+    }
+
+    .foto-solta {
+        width: 150px;
+    }
+}
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(120deg, #ff9a9e, #fad0c4);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+/* Mantém tudo no topo do PC (estável) */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* CARD */
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    max-width: 380px;
+    width: 100%;
+    animation: fadeIn 0.7s ease;
+    margin-top: 40px; /* Mantém todas as etapas alinhadas */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* BOTÕES */
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #ff6b81;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.2s;
+}
+
+button:hover {
+    background: #ff4757;
+}
+
+/* FOTO PRINCIPAL */
+.photo {
+    width: 100%;
+    margin-top: 15px;
+    border-radius: 15px;
+    display: none;
+}
+
+/* CORAÇÃO */
+.heart {
+    color: red;
+    font-size: 30px;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(1); }
+}
+
+/* MENSAGEM FINAL */
+#mensagem {
+    font-size: 18px;
+    margin-top: 20px;
+    display: none;
+    color: #b0004c;
+    font-weight: bold;
+}
+
+/* POPUP */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    width: 80%;
+    max-width: 350px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(255,0,80,0.5);
+    font-size: 18px;
+    animation: aparecer 0.25s ease-out;
+}
+
+/* ============================= */
+/*   FOTOS ESPALHADAS NA TELA    */
+/* ============================= */
+.foto-solta {
+    position: absolute;
+    width: 140px;
+    object-fit: cover;
+    border-radius: 14px;
+    opacity: 0;
+    transform-origin: center center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    pointer-events: auto;
+    z-index: 60;
+    animation: aparecerFoto 0.6s forwards ease-out;
+    transition: transform 0.35s ease-out;
+}
+
+/* Hover no PC */
+.foto-solta:hover {
+    transform: scale(1.6) !important;
+    z-index: 99999 !important;
+}
+
+/* ANIMAÇÃO */
+@keyframes aparecerFoto {
+    from { opacity: 0; transform: scale(0.6); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+/* Anim pop */
+@keyframes aparecer {
+    from { transform: scale(0.8); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+}
+
+/* ============================= */
+/*       CELULAR (≤600px)        */
+/* ============================= */
+@media (max-width: 600px) {
+
+    body {
+        justify-content: flex-start;
+        padding: 10px;
+    }
+
+    .card {
+        max-width: 320px;
+        padding: 20px;
+        margin-top: 25px;
+    }
+
+    .popup-content {
+        width: 90%;
+        max-width: 300px;
+        font-size: 16px;
+        padding: 15px;
+    }
+
+    .foto-solta {
+        width: 90px;
+        border-radius: 10px;
+        transition: transform 0.25s ease-out;
+    }
+
+    /* Zoom no toque */
+    .foto-solta:active {
+        transform: scale(1.35) !important;
+        z-index: 999999;
+    }
+}
+
+/* ============================= */
+/*       PC / NOTEBOOK           */
+/* ============================= */
+@media (min-width: 700px) {
+    
+    body {
+        justify-content: flex-start;  /* Nada desce */
+        align-items: center;
+        padding-top: 30px;
+    }
+
+    .card {
+        margin-top: 50px;   /* Todas as etapas ficam alinhadas */
+    }
+
+    .foto-solta {
+        width: 150px;
+    }
 }

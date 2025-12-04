@@ -51,6 +51,8 @@ function mostrarMensagemFinal() {
 }
 
 function animarTexto() {
+
+    removerFotos(); // ← REMOVE AS FOTOS AO CLICAR EM LER MAIS
     const area = document.getElementById("textoDigitado");
     const botao = document.getElementById("btnLerMais");
 
@@ -108,7 +110,6 @@ function fecharPopupEspecial() {
 }
 
 function espalharFotos() {
-    // paths das 10 fotos (confira nomes)
     const fotos = [
         "assets/f1.png",
         "assets/f3.png",
@@ -122,60 +123,61 @@ function espalharFotos() {
         "assets/f10.png"
     ];
 
-    // remove fotos antigas se já existirem
     document.querySelectorAll('.foto-solta').forEach(el => el.remove());
 
-    // parâmetros de posicionamento
-    const startTop = 18;    // topo da primeira foto (vh)
-    const stepBase = 8;     // passo base entre fotos (vh)
-    const minGap = 6;       // gap mínimo entre tops (vh)
+    const finalCard = document.getElementById("final");
+    const rect = finalCard.getBoundingClientRect();
 
-    // ranges horizontais (próximas ao centro, sem invadir modal)
-    const leftRangeLeft = {min: 6, max: 14};   // esquerda (vw)
-    const leftRangeRight = {min: 76, max: 84}; // direita (vw)
+    // Começa logo abaixo do card final
+    const startTop = rect.bottom + window.scrollY + 20;
 
-    let lastTop = 0;
+    let lastTop = startTop;
+
+    const isMobile = window.innerWidth < 600;
+
+    // Configuração para celular e PC
+    const leftPositions = isMobile
+        ? [10, 55]  // celular: colunas bem próximas (10vw e 55vw)
+        : [15, 72]; // PC: duas colunas mais ajustadas ao centro
 
     for (let i = 0; i < fotos.length; i++) {
-        const src = fotos[i];
         const img = document.createElement("img");
-        img.src = src;
+        img.src = fotos[i];
         img.className = "foto-solta";
 
-        // calculo do top: base descendente + jitter, garantindo gap minimo
-        const baseTop = startTop + Math.floor(i/2) * stepBase; 
-        // floor(i/2) porque cada "par" ocupa aproximadamente o mesmo nível vertical
-        // agora adicionamos jitter vertical entre -2 e +2
-        const jitter = (Math.random() * 4) - 2; // -2 .. +2
-        let top = baseTop + jitter;
+        // GAP entre fotos menor
+        const gap = isMobile
+            ? 85 + Math.random() * 25  // celular: fica bem junto
+            : 110 + Math.random() * 25; // PC: um pouco mais espaçado, mas ainda perto
 
-        // garantir que top esteja pelo menos minGap abaixo do lastTop
-        if (i > 0 && top < lastTop + minGap) {
-            top = lastTop + minGap;
-        }
+        const top = lastTop + gap;
         lastTop = top;
 
-        // alternar esquerda/direita
-        const isLeft = (i % 2 === 0); // par -> esquerda, ímpar -> direita
-        const leftRange = isLeft ? leftRangeLeft : leftRangeRight;
-        // jitter horizontal pequeno para não ficar alinhado demais
-        const leftJitter = (Math.random() * 6) - 3; // -3 .. +3 vw
-        let left = (leftRange.min + leftRange.max) / 2 + leftJitter;
+        // Alterna colunas
+        const col = i % 2; // 0 = esquerda, 1 = direita
 
-        // limitar dentro do range
-        if (left < leftRange.min) left = leftRange.min;
-        if (left > leftRange.max) left = leftRange.max;
+        // Pequena variação horizontal
+        const leftJitter = (Math.random() * 4) - 2;
 
-        // pequena rotação aleatória para efeito polaroid
-        const rotate = (Math.random() * 18) - 9; // -9deg .. +9deg
+        const left = leftPositions[col] + leftJitter;
 
-        // aplicar estilo
-        img.style.top = top + "vh";
+        // rotação suave
+        const rotate = (Math.random() * 12) - 6;
+
+        img.style.position = "absolute";
+        img.style.top = top + "px";
         img.style.left = left + "vw";
-        img.style.transform = `rotate(${rotate}deg)`; // animação inicial via keyframes ajustará scale/opacidade
+        img.style.transform = `rotate(${rotate}deg)`;
         img.style.animationDelay = (i * 0.12) + "s";
 
         document.body.appendChild(img);
     }
+
+    // Faz página crescer para comportar as fotos
+    document.body.style.height = (lastTop + 300) + "px";
+}
+
+function removerFotos() {
+    document.querySelectorAll('.foto-solta').forEach(el => el.remove());
 }
 
